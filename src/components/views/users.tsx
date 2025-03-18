@@ -4,7 +4,9 @@ import {useSearchUser} from '@/hooks'
 import {UserSkeleton} from '@/components/sections'
 import {cn} from '@/lib'
 
-const UserCard = lazy(() => import('../sections/user-card'))
+const UserCardContainer = lazy(
+  () => import('../containers/user-card-container')
+)
 
 export const UsersView = () => {
   const {mutate, error, users, isPending, isInitial} = useSearchUser()
@@ -49,7 +51,7 @@ export const UsersView = () => {
           users.map(user => (
             <div key={user?.login} className='animate-slide-up'>
               <Suspense fallback={<UserSkeleton />}>
-                <UserCard data={user} />
+                <UserCardContainer data={user} />
               </Suspense>
             </div>
           ))

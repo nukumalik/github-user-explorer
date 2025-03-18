@@ -1,4 +1,4 @@
-import type {User} from '@/types'
+import type {Repository} from '@/types'
 import {
   Avatar,
   AvatarFallback,
@@ -15,52 +15,46 @@ import {
   Separator
 } from '../ui'
 import {ChevronDownIcon} from 'lucide-react'
-import {lazy, Suspense, useMemo} from 'react'
-import {useClipboard, useUserRepositories} from '@/hooks'
+import {lazy, Suspense} from 'react'
 import {RepositorySkeleton, RepositorySkeletonList} from './repository-skeleton'
 
 export interface UserCardProps {
-  data: User
+  username?: string
+  avatar?: string
+  repositories?: Repository[]
+  error?: string
+  initialName?: string
+  isInitial?: boolean
+  isLoading?: boolean
+  onGetRepositories?: (isOpen: boolean) => void
+  onClone?: (clone_url: string) => void
 }
 
 const UserRepository = lazy(() => import('../common/user-repository'))
 
-export const UserCard = ({data}: UserCardProps) => {
-  const {mutate, error, repositories, isInitial, isPending} =
-    useUserRepositories()
-  const {copy} = useClipboard()
-
-  const initialName = useMemo(() => {
-    return data?.login?.split('')[0]
-  }, [data])
-
-  const handleGetRepositories = (isOpen: boolean) => {
-    if (!isOpen || !data?.login) return
-    mutate(data.login)
-  }
-
-  const handleClone = (clone_url: string) => {
-    copy(clone_url, 'Repository URL copied')
-  }
-
+export const UserCard = ({
+  username,
+  avatar,
+  repositories,
+  error,
+  initialName,
+  isInitial,
+  isLoading,
+  onClone,
+  onGetRepositories
+}: UserCardProps) => {
   return (
-    <Collapsible
-      onOpenChange={handleGetRepositories}
-      className='animate-slide-up'
-    >
+    <Collapsible onOpenChange={onGetRepositories} className='animate-slide-up'>
       <Card>
         <CardHeader>
           <CardTitle>
             <div className='flex items-center justify-between'>
               <div className='flex items-center space-x-3 flex-5/6'>
                 <Avatar>
-                  <AvatarImage
-                    src={data?.avatar_url}
-                    alt={`${data?.login} image`}
-                  />
+                  <AvatarImage src={avatar} alt={`${username} image`} />
                   <AvatarFallback>{initialName}</AvatarFallback>
                 </Avatar>
-                <span className='line-clamp-1'>{data?.login}</span>
+                <span className='line-clamp-1'>{username}</span>
               </div>
             </div>
           </CardTitle>
@@ -75,7 +69,7 @@ export const UserCard = ({data}: UserCardProps) => {
         </CardHeader>
         <CollapsibleContent>
           <CardContent>
-            {isPending ? (
+            {isLoading ? (
               <RepositorySkeletonList />
             ) : repositories?.length ? (
               <div className='flex flex-col gap-2'>
@@ -83,7 +77,7 @@ export const UserCard = ({data}: UserCardProps) => {
                   <Suspense key={repo.id} fallback={<RepositorySkeleton />}>
                     <div key={repo.id}>
                       {!!index && <Separator className='mb-2' />}
-                      <UserRepository data={repo} onClone={handleClone} />
+                      <UserRepository data={repo} onClone={onClone} />
                     </div>
                   </Suspense>
                 ))}
