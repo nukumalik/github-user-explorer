@@ -19,6 +19,7 @@ export const SearchForm = ({
       <form
         onSubmit={onSubmit}
         className={cn(className, 'flex items-center gap-2')}
+        data-testid='search-form'
       >
         <SearchBar className='flex-auto' onChange={onChange} />
         <Button type='submit' className='p-5'>
