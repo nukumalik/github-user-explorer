@@ -1,35 +1,39 @@
-import {useRef, lazy, Suspense} from 'react'
+import {lazy, Suspense} from 'react'
 import {SearchForm, UserSkeletonList} from '@/components/sections'
-import {useSearchUser} from '@/hooks'
 import {UserSkeleton} from '@/components/sections'
 import {cn} from '@/lib'
+import {User} from '@/types'
 
 const UserCardContainer = lazy(
   () => import('../containers/user-card-container')
 )
 
-export const UsersView = () => {
-  const {mutate, error, users, isPending, isInitial} = useSearchUser()
-  const searchRef = useRef('')
+export interface UsersViewProps {
+  data: User[]
+  error?: string
+  isInitial?: boolean
+  isLoading?: boolean
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (searchRef.current.trim()) mutate(searchRef.current)
-  }
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    searchRef.current = e.target.value
-  }
-
+export const UsersView = ({
+  data,
+  error,
+  isInitial,
+  isLoading,
+  onSubmit,
+  onChange
+}: UsersViewProps) => {
   return (
     <div
       className={cn(
         'flex py-6 lg:py-14 px-4 lg:px-0 bg-white/60 rounded-2xl shadow-lg shadow-gray-100 m-10 min-h-[90vh]',
-        isInitial && !isPending && 'items-center justify-between'
+        isInitial && !isLoading && 'items-center justify-between'
       )}
     >
       <div className='lg:max-w-lg lg:min-w-lg mx-auto space-y-4'>
-        {isInitial && !isPending && (
+        {isInitial && !isLoading && (
           <div className='grid gap-4 mb-12 text-center animate-fade-in'>
             <h1 className='text-4xl max-w-md mx-auto leading-12'>
               GitHub Users Explorer Search, Analyze, Discover
@@ -42,13 +46,13 @@ export const UsersView = () => {
         )}
         <SearchForm
           className='mb-8 animate-fade-in'
-          onSubmit={handleSubmit}
-          onChange={handleSearchChange}
+          onSubmit={onSubmit}
+          onChange={onChange}
         />
-        {isPending ? (
+        {isLoading ? (
           <UserSkeletonList />
-        ) : users.length ? (
-          users.map(user => (
+        ) : data.length ? (
+          data.map(user => (
             <div key={user?.login} className='animate-slide-up'>
               <Suspense fallback={<UserSkeleton />}>
                 <UserCardContainer data={user} />
@@ -57,7 +61,7 @@ export const UsersView = () => {
           ))
         ) : (
           !isInitial &&
-          !isPending && (
+          !isLoading && (
             <div className='flex items-center justify-center py-10 animate-fade-in'>
               <p className='text-sm text-muted-foreground'>
                 {error || 'No users found'}
