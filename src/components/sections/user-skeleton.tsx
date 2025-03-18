@@ -2,7 +2,7 @@ import {Card, CardHeader, CardTitle, Skeleton} from '../ui'
 
 export const UserSkeleton = () => {
   return (
-    <Card>
+    <Card data-testid='user-skeleton'>
       <CardHeader>
         <CardTitle>
           <div className='flex items-center space-x-4'>
@@ -17,7 +17,7 @@ export const UserSkeleton = () => {
 
 export const UserSkeletonList = () => {
   return (
-    <div className='space-y-4'>
+    <div className='space-y-4' data-testid='user-skeleton-list'>
       <UserSkeleton />
       <UserSkeleton />
       <UserSkeleton />
