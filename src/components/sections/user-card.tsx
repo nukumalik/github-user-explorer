@@ -44,7 +44,11 @@ export const UserCard = ({
   onGetRepositories
 }: UserCardProps) => {
   return (
-    <Collapsible onOpenChange={onGetRepositories} className='animate-slide-up'>
+    <Collapsible
+      onOpenChange={onGetRepositories}
+      className='animate-slide-up'
+      data-testid='user-card'
+    >
       <Card>
         <CardHeader>
           <CardTitle>

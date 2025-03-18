@@ -9,7 +9,10 @@ export interface UserRepositoryProps {
 
 export const UserRepository = ({data, onClone}: UserRepositoryProps) => {
   return (
-    <div className='grid grid-cols-1 md:grid-cols-6 gap-4 text-sm py-2 max-w-full'>
+    <div
+      className='grid grid-cols-1 md:grid-cols-6 gap-4 text-sm py-2 max-w-full'
+      data-testid='user-repository'
+    >
       <div className='line-clamp-1 col-span-3 max-h-5 self-center text-primary hover:underline'>
         <a href={data?.html_url} target='_blank'>
           {data?.name}
