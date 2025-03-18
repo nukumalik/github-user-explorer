@@ -16,7 +16,7 @@ import {
 } from '../ui'
 import {ChevronDownIcon} from 'lucide-react'
 import {lazy, Suspense, useMemo} from 'react'
-import {useUserRepositories} from '@/hooks'
+import {useClipboard, useUserRepositories} from '@/hooks'
 import {RepositorySkeleton, RepositorySkeletonList} from './repository-skeleton'
 
 export interface UserCardProps {
@@ -28,6 +28,7 @@ const UserRepository = lazy(() => import('../common/user-repository'))
 export const UserCard = ({data}: UserCardProps) => {
   const {mutate, error, repositories, isInitial, isPending} =
     useUserRepositories()
+  const {copy} = useClipboard()
 
   const initialName = useMemo(() => {
     return data?.login?.split('')[0]
@@ -36,6 +37,10 @@ export const UserCard = ({data}: UserCardProps) => {
   const handleGetRepositories = (isOpen: boolean) => {
     if (!isOpen || !data?.login) return
     mutate(data.login)
+  }
+
+  const handleClone = (clone_url: string) => {
+    copy(clone_url, 'Repository URL copied')
   }
 
   return (
@@ -78,7 +83,7 @@ export const UserCard = ({data}: UserCardProps) => {
                   <Suspense key={repo.id} fallback={<RepositorySkeleton />}>
                     <div key={repo.id}>
                       {!!index && <Separator className='mb-2' />}
-                      <UserRepository data={repo} />
+                      <UserRepository data={repo} onClone={handleClone} />
                     </div>
                   </Suspense>
                 ))}
