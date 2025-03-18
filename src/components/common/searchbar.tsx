@@ -9,7 +9,7 @@ export interface SearchBarProps {
 
 export const SearchBar = ({onChange, className}: SearchBarProps) => {
   return (
-    <div className={cn(className, 'relative')}>
+    <div className={cn(className, 'relative')} data-testid='searchbar'>
       <Input
         type='text'
         placeholder='Search'
