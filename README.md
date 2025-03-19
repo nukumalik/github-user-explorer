@@ -1,4 +1,4 @@
-# GitHub Users
+# GitHub User Explorer
 
 This is a simple React application that displays a list of GitHub users.
 
@@ -6,34 +6,76 @@ It uses Vite as the development server and bundler, and uses TypeScript for type
 
 ## Features
 
-- Display a list of GitHub users
-- Filter users by username
-- Sort users by username or followers
+- Display a list of GitHub users based on user input
+- Display a list of user repositories
 
-## ESLint Configuration
+## **⚡ Installation**
 
-This project uses ESLint for linting, with the following configuration:
+Make sure you have **Node.js**.
 
-- `tseslint.configs.recommendedTypeChecked` for type-aware lint rules
-- `tseslint.configs.stylisticTypeChecked` for stylistic rules
-- `eslint-plugin-react-x` for React-specific lint rules
-- `eslint-plugin-react-dom` for React-specific lint rules
+> **_NOTE:_** this project uses `pnpm`, but free to use your preference node package manager.
 
-You can update the configuration to enable or disable specific rules.
-
-## 📦 Instalasi
-
-**Clone repository ini**
-
-```bash
-   git clone https://github.com/username/github-user-explorer.git
-   cd github-user-explorer
-```
-
-## Running the Application
-
-You can run the application with the following command:
+#### 1. Clone the repository:
 
 ```sh
+git clone https://github.com/nukumalik/github-user-explorer.git
+cd github-user-explorer
+```
+
+#### 2. Install dependencies:
+
+```sh
+pnpm install
+# OR
+npm install
+```
+
+## **🚀 Running The Project**
+
+#### 1. Development Mode (Auto Relode)
+
+```sh
+pnpm run dev
+# OR
 npm run dev
 ```
+
+#### 2. Build the Project
+
+```sh
+pnpm run build
+# OR
+npm run build
+```
+
+#### 3. Run the Built Project
+
+```sh
+pnpm run start
+```
+
+## **🚀 Code Standard & Commit Guidelines**
+
+#### 1. Linting & Formatting
+
+Run ESLint and Prettier to enforce code style:
+
+```sh
+pnpm run lint
+pnpm run format
+# OR
+npm run lint
+npm run format
+```
+
+#### 2. Commit Message Standard (Husky & Commitlint)
+
+Use Conventional Commits format when committing changes:
+
+```sh
+git commit -m "feat: add user authentication"
+```
+
+## **📜 License**
+
+This project is licensed under the ISC License.
